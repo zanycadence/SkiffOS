@@ -1,0 +1,6 @@
+config BR2_PACKAGE_ROCKPI_FIRMWARE
+	bool "rockpi-firmware"
+	help
+	  RockPi extra binaries and firmware.
+
+	  https://github.com/radxa/rkbin

@@ -238,6 +238,7 @@ Here are the boards/systems currently supported by Skiff:
 | [Pi 0]             | pi/0               | N/A                  | ✔ 4.19.66       |                        |
 | [Pi 3] (and 1/2)   | pi/3               | N/A                  | ✔ 4.19.66       |                        |
 | [Pi 4]             | pi/4               | N/A                  | ✔ 4.19.66       |                        |
+| [RockPi S]         | rockpi/s           | ✔ U-Boot 2019.01 Src | ✔ 4.4.154       | ⚠ Recent release       |
 | [OrangePi Lite]    | orangepi/lite      | ✔ U-Boot 2018.05 Src | ✔ 4.17.15       | ⚠ Needs testing        |
 | [OrangePi Zero]    | orangepi/zero      | ✔ U-Boot 2018.07 Src | ✔ 4.17.15       | ⚠ Needs testing        |
 | [Odroid U]         | odroid/u           | ✔ U-Boot 2016.03 Src | ✔ mainline      | ⚠ Discontinued         |
