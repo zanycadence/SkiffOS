@@ -1,0 +1,1 @@
+CONFIG_SPL_FIT_SOURCE="board/rockchip/evb_rk3308/fit_spl_atf.its"
