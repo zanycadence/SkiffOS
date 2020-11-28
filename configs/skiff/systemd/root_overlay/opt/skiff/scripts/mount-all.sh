@@ -128,28 +128,35 @@ rm -rf /tmp/skiff_ssh_keys
 chmod 700 /root/.ssh
 chmod 600 /root/.ssh/authorized_keys
 
+mkdir -p $PERSIST_ROOT/skiff/etc/
+echo "Place etc overrides here." > $PERSIST_ROOT/skiff/etc/readme
+if [ -n "$SKIFF_RSYNC_ETC" ]; then
+  rsync -rav $PERSIST_ROOT/skiff/etc/ /etc/
+else
+  etc_workdir=${overlay_workdir}/etc
+  mkdir -p $etc_workdir
+  mount -t overlay \
+        -o lowerdir=/etc,upperdir=${PERSIST_ROOT}/skiff/etc,workdir=$etc_workdir \
+        overlay /etc
+fi
+
 mkdir -p /etc/NetworkManager/system-connections
 if ! mountpoint /etc/NetworkManager/system-connections ; then
   mkdir -p $PERSIST_ROOT/skiff/connections
   echo "# Place NetworkManager keyfile configs here." > $PERSIST_ROOT/skiff/connections/readme
+  mkdir -p /etc/NetworkManager/system-connections
   # chmod all files to 0600 or NetworkManager will not read them.
   chmod 600 ${PERSIST_ROOT}/skiff/connections/*
-  mkdir -p /etc/NetworkManager/system-connections
   connections_workdir=${overlay_workdir}/nm_connections
   mkdir -p $connections_workdir
-  mount -t overlay -o lowerdir=/etc/NetworkManager/system-connections,upperdir=${PERSIST_ROOT}/skiff/connections,workdir=$connections_workdir overlay /etc/NetworkManager/system-connections
+  mount -t overlay \
+        -o lowerdir=/etc/NetworkManager/system-connections,upperdir=${PERSIST_ROOT}/skiff/connections,workdir=$connections_workdir \
+        overlay /etc/NetworkManager/system-connections
 fi
 chmod 0755 /etc/NetworkManager
 chmod 0644 /etc/NetworkManager/NetworkManager.conf
 chmod -R 0600 /etc/NetworkManager/system-connections
 chown -R root:root /etc/NetworkManager/system-connections
-
-if [ -d $PERSIST_ROOT/skiff/etc ]; then
-  rsync -rav $PERSIST_ROOT/skiff/etc/ /etc/
-else
-  mkdir -p $PERSIST_ROOT/skiff/etc/
-fi
-echo "Place etc overrides here." > $PERSIST_ROOT/skiff/etc/readme
 
 if [ -f $PERSIST_ROOT/skiff/hostname ] && [ -n "$(cat ${PERSIST_ROOT}/skiff/hostname)" ]; then
   OHOSTNAME=$(cat /etc/hostname)
